@@ -10,11 +10,33 @@ import { useRouter } from 'expo-router'
 import styles from './popularjobs.style'
 import { COLORS, SIZES } from '../../../constants'
 import PopularJobCard from '../../common/cards/popular/PopularJobCard'
+import useFetch from '../../../hook/useFetch'
 
-const Popularjobs = () => {
+const Popularjobs =  () => {
   const router = useRouter()
-  const isLoading = false
-  const error = false
+  const [data, setData] = useState([])
+  const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState(null)
+  useFetch(
+    'search',
+    {
+      query: 'React developer',
+      num_pages: 1,
+
+    }
+  ).then(res => {
+    setData(res?.data)
+    setIsLoading(res?.isLoading)
+    setError(error?.error)
+  })
+
+  const [selectedJob, setSelectedJob] = useState('');
+
+  const handleCardPress = (item) => {
+    router.push(`/job-details/${item.job_id}`);
+    setSelectedJob(item.job_id);
+  };
+
 
   return (
     <View
@@ -46,13 +68,15 @@ const Popularjobs = () => {
             )
             : (
               <FlatList 
-                data={[1,2,3,4]}
+                data={data}
                 renderItem={({item}) => (
                   <PopularJobCard
                     item={item}
+                    selectedJob={selectedJob}
+                    handleCardPress={handleCardPress}
                   />
                 )}
-                keyExtractor={(item) => item} // should be item?.job_id
+                keyExtractor={(item) => item?.job_id} 
                 contentContainerStyle={{columnGap: SIZES.medium}}
                 horizontal
               />
