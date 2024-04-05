@@ -11,24 +11,26 @@ import styles from './popularjobs.style'
 import { COLORS, SIZES } from '../../../constants'
 import PopularJobCard from '../../common/cards/popular/PopularJobCard'
 import useFetch from '../../../hook/useFetch'
+import { searchJob} from '../../../temp/tempData'
 
 const Popularjobs =  () => {
   const router = useRouter()
-  const [data, setData] = useState([])
+  const [data, setData] = useState(searchJob.data)
+  // const [data, setData] = useState([])
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState(null)
-  useFetch(
-    'search',
-    {
-      query: 'React developer',
-      num_pages: 1,
+  // useFetch(
+  //   'search',
+  //   {
+  //     query: 'React developer',
+  //     num_pages: 1,
 
-    }
-  ).then(res => {
-    setData(res?.data)
-    setIsLoading(res?.isLoading)
-    setError(error?.error)
-  })
+  //   }
+  // ).then(res => {
+  //   setData(res?.data)
+  //   setIsLoading(res?.isLoading)
+  //   setError(error?.error)
+  // })
 
   const [selectedJob, setSelectedJob] = useState('');
 

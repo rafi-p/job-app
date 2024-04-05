@@ -18,24 +18,29 @@ import {
 } from '../../components'
 import { COLORS, icons, SIZES } from '../../constants'
 import useFetch from '../../hook/useFetch'
+import {jobDetails} from '../../temp/tempData'
+
+const tabs = ["About", "Qualifications", "Responsibilities"]
 
 const JobDetails = () => {
     const params = useLocalSearchParams()
     const router = useRouter()
-    const [data, setData] = useState([])
+    const [data, setData] = useState(jobDetails.data)
+    // const [data, setData] = useState([])
     const [isLoading, setIsLoading] = useState(false)
     const [error, setError] = useState(null)
-    useFetch(
-        'job-details',
-        {
-            job_id: params.id,    
-        }
-    ).then(res => {
-        setData(res?.data)
-        setIsLoading(res?.isLoading)
-        setError(error?.error)
-    })
+    // useFetch(
+    //     'job-details',
+    //     {
+    //         job_id: params.id,    
+    //     }
+    // ).then(res => {
+    //     setData(res?.data)
+    //     setIsLoading(res?.isLoading)
+    //     setError(error?.error)
+    // })
     const [refreshing, setRefreshing] = useState(false)
+    const [activeTab, setActiveTab] = useState(tabs[0])
     const onRefresh = () => {}
 
 
@@ -84,7 +89,11 @@ const JobDetails = () => {
                                             companyName={data[0].employer_name}
                                             location={data[0].job_country}
                                         />
-                                        <JobTabs />
+                                        <JobTabs 
+                                            tabs={tabs}
+                                            activeTab={activeTab}
+                                            setActiveTab={setActiveTab}
+                                        />
                                     </View>
                                 )
                     }
