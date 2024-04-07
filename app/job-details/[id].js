@@ -18,30 +18,34 @@ import {
 } from '../../components'
 import { COLORS, icons, SIZES } from '../../constants'
 import useFetch from '../../hook/useFetch'
-import {jobDetails} from '../../temp/tempData'
 
 const tabs = ["About", "Qualifications", "Responsibilities"]
 
 const JobDetails = () => {
     const params = useLocalSearchParams()
     const router = useRouter()
-    const [data, setData] = useState(jobDetails.data)
-    // const [data, setData] = useState([])
+    const [data, setData] = useState([])
     const [isLoading, setIsLoading] = useState(false)
     const [error, setError] = useState(null)
-    // useFetch(
-    //     'job-details',
-    //     {
-    //         job_id: params.id,    
-    //     }
-    // ).then(res => {
-    //     setData(res?.data)
-    //     setIsLoading(res?.isLoading)
-    //     setError(error?.error)
-    // })
+    let refetch = () => {}
+    useFetch(
+        'job-details',
+        {
+            job_id: params.id,    
+        }
+    ).then(res => {
+        setData(res?.data)
+        setIsLoading(res?.isLoading)
+        setError(error?.error)
+        refetch = res.refetch
+    })
     const [refreshing, setRefreshing] = useState(false)
     const [activeTab, setActiveTab] = useState(tabs[0])
-    const onRefresh = () => {}
+    const onRefresh = useCallback(() => {
+        setRefreshing(true)
+        refetch()
+        setRefreshing(false)
+    }, [])
 
     const displayTabContent = () => {
         switch (activeTab) {

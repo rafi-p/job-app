@@ -10,26 +10,24 @@ import styles from './nearbyjobs.style'
 import { COLORS } from '../../../constants'
 import NearbyJobCard from '../../common/cards/nearby/NearbyJobCard'
 import useFetch from '../../../hook/useFetch'
-import { searchJob } from '../../../temp/tempData'
 
 const Nearbyjobs =  () => {
   const router = useRouter()
-  const [data, setData] = useState(searchJob.data)
-  // const [data, setData] = useState([])
+  const [data, setData] = useState([])
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState(null)
-  // useFetch(
-  //   'search',
-  //   {
-  //     query: 'React developer',
-  //     num_pages: 1,
+  useFetch(
+    'search',
+    {
+      query: 'React developer',
+      num_pages: 1,
 
-  //   }
-  // ).then(res => {
-  //   setData(res?.data)
-  //   setIsLoading(res?.isLoading)
-  //   setError(error?.error)
-  // })
+    }
+  ).then(res => {
+    setData(res?.data)
+    setIsLoading(res?.isLoading)
+    setError(error?.error)
+  })
 
 
   return (
